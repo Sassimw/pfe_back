@@ -2,6 +2,7 @@ package edu.pfe.staffing.service;
 
 import edu.pfe.staffing.model.Planning;
 import edu.pfe.staffing.model.Project;
+import edu.pfe.staffing.model.Team;
 import edu.pfe.staffing.model.User;
 import edu.pfe.staffing.repository.AssignmentRepository;
 import edu.pfe.staffing.repository.PlanningRepository;
@@ -57,5 +58,16 @@ public class ProjectService {
         });
 
         return users;
+    }
+
+    public Project Viewprojectsid(long projectid) {
+        if (projectRepository.findById(projectid).isPresent()){
+            return projectRepository.findById(projectid).get();
+        }
+        else {
+            return null;
+        }
+
+
     }
 }
