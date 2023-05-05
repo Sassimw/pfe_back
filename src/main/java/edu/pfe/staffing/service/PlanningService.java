@@ -62,7 +62,7 @@ public class PlanningService {
             dataLines.add(new String[]{"Date","Project"});
             planning.getAssignments().forEach(
                     assignment -> {
-                        String date = "2022-" + assignment.getMonth() + "-" + assignment.getDay();
+                        String date = "2023-" + assignment.getMonth() + "-" + assignment.getDay();
                         dataLines.add(new String[]
                                 {date, assignment.getProject().getName()});
                     }
