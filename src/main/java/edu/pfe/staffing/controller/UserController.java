@@ -41,7 +41,17 @@ public class UserController {
         Msg.put("Message", "UserUpdated:" + u.getId());
         return ResponseEntity.status(HttpStatus.OK).body(Msg);
     }
-
+    @PostMapping("/UpdateUser")
+    public ResponseEntity<?> UpdateUser(@PathParam("userid") long userid, @PathParam("firstname") String firstname,@PathParam("lastname") String lastname,@PathParam("email") String email)  {
+        User u = userService.findUserById(userid);
+        u.setFirstname(firstname);
+        u.setLastname(lastname);
+        u.setEmail(email);
+        userService.UpdateUser(u);
+        HashMap<String, String> Msg = new HashMap<>();
+        Msg.put("Message", "UserUpdated:" + u.getId());
+        return ResponseEntity.status(HttpStatus.OK).body(Msg);
+    }
 
     @GetMapping("/calculate")
     public ResponseEntity<?> calculateAllScores() {

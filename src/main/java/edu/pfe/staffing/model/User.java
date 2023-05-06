@@ -32,7 +32,6 @@ public class User {
     }
 
     private String matcle;
-    @JsonIgnore
     private String email;
     private String firstname;
     private String lastname;
