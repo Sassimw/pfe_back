@@ -31,7 +31,7 @@ public class UserController {
     @Autowired
     TeamService teamService;
 
-    @PostMapping("/AddUserToaTeam")
+    @PostMapping("/Updateteam")
     public ResponseEntity<?> addusertoateam(@PathParam("userid") long userid, @PathParam("teamid") long teamid) {
         Team t = teamService.findById(teamid);
         User u = userService.findUserById(userid);
@@ -41,6 +41,11 @@ public class UserController {
         Msg.put("Message", "UserUpdated:" + u.getId());
         return ResponseEntity.status(HttpStatus.OK).body(Msg);
     }
+
+
+
+
+
     @PostMapping("/UpdateUser")
     public ResponseEntity<?> UpdateUser(@PathParam("userid") long userid, @PathParam("firstname") String firstname,@PathParam("lastname") String lastname,@PathParam("email") String email)  {
         User u = userService.findUserById(userid);
@@ -52,6 +57,8 @@ public class UserController {
         Msg.put("Message", "UserUpdated:" + u.getId());
         return ResponseEntity.status(HttpStatus.OK).body(Msg);
     }
+
+
 
     @GetMapping("/calculate")
     public ResponseEntity<?> calculateAllScores() {
@@ -73,7 +80,8 @@ public class UserController {
 
     @GetMapping("/AllUsers")
     public ResponseEntity<?> allusers() {
-
+        User u ;
+        List<User> finallist = new ArrayList<>();
         List<User> alluserslist = userService.getAllUsers();
 
         return ResponseEntity.status(HttpStatus.OK).body(alluserslist);
@@ -83,6 +91,13 @@ public class UserController {
     public ResponseEntity<?> getOneUserDetails(@PathVariable("userId") long userId) {
         User user = userService.findUserById(userId);
         return ResponseEntity.status(HttpStatus.OK).body(user);
+    }
+
+    @GetMapping("/team/{userid}")
+    public ResponseEntity<?> getTeam(@PathVariable("userid") long userId) {
+        User user = userService.findUserById(userId);
+        Team team = teamService.findById(user.getTeam().getId());
+        return ResponseEntity.status(HttpStatus.OK).body(team);
     }
 
     @GetMapping("/search")
@@ -141,6 +156,22 @@ public class UserController {
         }
 
         return ResponseEntity.ok().body(Msg);
+    }
+
+    @DeleteMapping("/deleteuser/{id}")
+    public ResponseEntity<?> deleteuser(@PathVariable("id") long userid) {
+        User user = userService.findUserById(userid);
+        HashMap<String, String> Msg = new HashMap<>();
+        if ( user == null) {
+            Msg.put("message", "The Following id does not exist " + user);
+        } else {
+            userService.deleteUser(userid);
+
+            Msg.put("message", "deletedid " + userid);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(Msg);
+
     }
 
 }

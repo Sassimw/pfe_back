@@ -119,7 +119,6 @@ public class User {
     }
 
     @ManyToOne
-    @JsonIgnore
     private Team team;
     @OneToOne
     @JsonIgnore

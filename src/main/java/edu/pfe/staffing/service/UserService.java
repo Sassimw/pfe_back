@@ -101,4 +101,10 @@ public class UserService {
         });
         return team.get();
     }
+
+    public void deleteUser(long userid) {
+        planningRepository.deleteById(userid);
+        userRepository.deleteById(userid);
+    }
+
 }
