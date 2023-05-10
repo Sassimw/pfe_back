@@ -49,7 +49,15 @@ public class PlanningController {
         Msg.put("Message", "New Assignment to a project has been added to a user planning");
         return ResponseEntity.status(HttpStatus.OK).body(Msg);
     }
+    @PostMapping("/addFromReq")
+    public ResponseEntity<?> addnewassignement(@RequestParam("userid") long userid, @RequestParam("projectid") String project, @RequestParam("month") int month, @RequestParam("day") int day, @RequestParam("reqid") int reqid) {
 
+
+        planningService.AddAssignmentToPlanning(userService.findUserById(userid).getPlanning().getId(), month, day, project,reqid);
+        HashMap<String, String> Msg = new HashMap<>();
+        Msg.put("Message", "New Assignment to a project has been added to a user planning");
+        return ResponseEntity.status(HttpStatus.OK).body(Msg);
+    }
     @GetMapping("/ExportPlaningForOneUser")
     public ResponseEntity<?> exportplaningforoneuser(@PathParam("userid") long userid) {
         User i = userService.findUserById(userid);

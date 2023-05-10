@@ -1,9 +1,11 @@
 package edu.pfe.staffing.service;
 
 import edu.pfe.staffing.model.Assignment;
+import edu.pfe.staffing.model.AssignmentRequest;
 import edu.pfe.staffing.model.Planning;
 import edu.pfe.staffing.model.Role;
 import edu.pfe.staffing.repository.AssignmentRepository;
+import edu.pfe.staffing.repository.AssignmentRequestRepository;
 import edu.pfe.staffing.repository.PlanningRepository;
 import edu.pfe.staffing.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,8 @@ public class PlanningService {
     PlanningRepository planningRepository;
 
     @Autowired
+    AssignmentRequestRepository assignmentRequestRepository;
+    @Autowired
     ProjectService projectService;
 
     public void createPlanning(Planning planning) {
@@ -33,6 +37,7 @@ public class PlanningService {
     }
 
     public void AddAssignmentToPlanning(Long idplanning, int month, int day, String projectId) {
+
         Assignment assignment = new Assignment();
         assignment.setMonth(month);
         assignment.setDay(day);
@@ -41,6 +46,17 @@ public class PlanningService {
         assignmentRepository.save(assignment);
 
 
+    }
+    public void AddAssignmentToPlanning(Long idplanning, int month, int day, String projectId,long idRequest) {
+        AssignmentRequest assignmentRequest =assignmentRequestRepository.findById(idRequest).get();
+        assignmentRequest.setAccepted(true);
+        assignmentRequestRepository.save(assignmentRequest);
+        Assignment assignment = new Assignment();
+        assignment.setMonth(month);
+        assignment.setDay(day);
+        assignment.setProject(projectService.getById(Long.parseLong(projectId)));
+        assignment.setPlanning(planningRepository.getOne(idplanning));
+        assignmentRepository.save(assignment);
     }
 
     public void deleteAssignmentById(long assignmentId) {

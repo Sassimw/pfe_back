@@ -17,4 +17,8 @@ public class RequestService {
     public List<AssignmentRequest> getAllRequests() {
         return assignmentRequestRepository.findAll();
     }
+    public AssignmentRequest findAssigmentById(Long id) {
+
+        return assignmentRequestRepository.findById(id).get();
+    }
 }
