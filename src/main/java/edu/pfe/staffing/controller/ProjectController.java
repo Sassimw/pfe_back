@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,6 +59,18 @@ public class ProjectController {
         return ResponseEntity.status(HttpStatus.OK).body(Msg);
 
     }
-
+    @PostMapping("/UpdateProject")
+    public ResponseEntity<?> UpdateUser(@PathParam("projectid") long projectid, @PathParam("name") String name, @PathParam("budget") double budget
+            , @PathParam("workload") int workload,@PathParam("crucuality") String crucuality)  {
+        Project prj = projectService.Viewprojectsid(projectid);
+        prj.setName(name);
+        prj.setBudget(budget);
+        prj.setWorkload(workload);
+        prj.setCriticality(crucuality);
+        projectService.updateProject(prj);
+        HashMap<String, String> Msg = new HashMap<>();
+        Msg.put("Message", "UserUpdated:" + prj.getId());
+        return ResponseEntity.status(HttpStatus.OK).body(Msg);
+    }
 
 }
