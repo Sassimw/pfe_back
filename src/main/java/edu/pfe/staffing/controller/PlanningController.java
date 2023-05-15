@@ -1,9 +1,6 @@
 package edu.pfe.staffing.controller;
 
-import edu.pfe.staffing.model.Assignment;
-import edu.pfe.staffing.model.Planning;
-import edu.pfe.staffing.model.Team;
-import edu.pfe.staffing.model.User;
+import edu.pfe.staffing.model.*;
 import edu.pfe.staffing.service.*;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +60,19 @@ public class PlanningController {
         User i = userService.findUserById(userid);
         return ResponseEntity.status(HttpStatus.OK).body(i.getPlanning());
 
+    }
+
+    @GetMapping("/ExportPlaning")
+    public ResponseEntity<?> allPlannings() {
+        List<Planning> allplanning = planningService.getAllPlannings();
+        List<AssigmentUser> ListAssigmentUser = new ArrayList<>() ;
+        for (Planning plan : allplanning) {
+            User user = userService.findUserById(plan.getId());
+            AssigmentUser ass_user = new AssigmentUser(user,plan.getAssignments());
+            ListAssigmentUser.add(ass_user);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(ListAssigmentUser);
     }
 
     @GetMapping("/{userId}/download-planning")

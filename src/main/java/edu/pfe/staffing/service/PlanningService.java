@@ -1,9 +1,6 @@
 package edu.pfe.staffing.service;
 
-import edu.pfe.staffing.model.Assignment;
-import edu.pfe.staffing.model.AssignmentRequest;
-import edu.pfe.staffing.model.Planning;
-import edu.pfe.staffing.model.Role;
+import edu.pfe.staffing.model.*;
 import edu.pfe.staffing.repository.AssignmentRepository;
 import edu.pfe.staffing.repository.AssignmentRequestRepository;
 import edu.pfe.staffing.repository.PlanningRepository;
@@ -107,5 +104,9 @@ public class PlanningService {
             escapedData = "\"" + data + "\"";
         }
         return escapedData;
+    }
+
+    public List<Planning> getAllPlannings() {
+        return planningRepository.findAll();
     }
 }
