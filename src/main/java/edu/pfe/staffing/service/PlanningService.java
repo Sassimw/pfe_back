@@ -29,6 +29,10 @@ public class PlanningService {
     @Autowired
     ProjectService projectService;
 
+    @Autowired
+    UserService userService;
+
+
     public void createPlanning(Planning planning) {
         planningRepository.save(planning);
     }
@@ -84,6 +88,43 @@ public class PlanningService {
             dataLines.stream()
                     .map(this::convertToCSV)
                     .forEach(pw::println);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return csvOutputFile;
+    }
+
+    public File saveAllPlanningToFile() {
+        List<Planning> listOfPlannings = planningRepository.findAll();
+        String TMP_FILE_PATH = System.getProperty("user.dir") + File.separator + "tmp_files";
+        File tmpFile = new File(TMP_FILE_PATH);
+        if (!tmpFile.exists())
+            tmpFile.mkdir();
+
+        String CSV_FILE_PATH = System.getProperty("user.dir") + File.separator + "tmp_files" + File.separator + "planning.csv";
+        File csvOutputFile = new File(CSV_FILE_PATH);
+
+        try (PrintWriter pw = new PrintWriter(csvOutputFile)) {
+
+            List<String[]> dataLines = new ArrayList<>();
+            dataLines.add(new String[]{"User name","Date", "Project"});
+
+            for ( Planning planning : listOfPlannings ) {
+                User u = userService.findUserById(planning.getId());
+                planning.getAssignments().forEach(
+                        assignment -> {
+                            String date = "2023-" + assignment.getMonth() + "-" + assignment.getDay();
+                            dataLines.add(new String[]
+                                    {u.getFirstname() +" " + u.getLastname() ,date, assignment.getProject().getName()});
+                        }
+                );
+            }
+
+            dataLines.stream()
+                    .map(this::convertToCSV)
+                    .forEach(pw::println);
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

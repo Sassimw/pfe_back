@@ -76,10 +76,35 @@ public class PlanningController {
     }
 
     @GetMapping("/{userId}/download-planning")
-    public ResponseEntity<?> downloadPlanning(@PathVariable("userId") long userId) {
+    public ResponseEntity<?> downloadUserPlanning(@PathVariable("userId") long userId) {
         User user = userService.findUserById(userId);
         Planning planning = user.getPlanning();
         File file = planningService.savePlanningToFile(planning);
+
+        InputStreamResource resource = null;
+        try {
+            resource = new InputStreamResource(new FileInputStream(file));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition",
+                String.format("attachment; filename=\"%s\"", file.getName()));
+        headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+        headers.add("Pragma", "no-cache");
+        headers.add("Expires", "0");
+
+        ResponseEntity<Object> responseEntity = ResponseEntity.ok().headers(headers)
+                .contentLength(file.length())
+                .contentType(MediaType.parseMediaType("application/txt")).body(resource);
+
+        return responseEntity;
+    }
+
+    @GetMapping("/download-planning")
+    public ResponseEntity<?> downloadPlanning() {
+        File file = planningService.saveAllPlanningToFile();
 
         InputStreamResource resource = null;
         try {
