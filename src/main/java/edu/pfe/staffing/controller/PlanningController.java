@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.websocket.server.PathParam;
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,6 +39,9 @@ public class PlanningController {
 
     @Autowired
     ProjectService projectService;
+
+    @Autowired
+    EmailService emailService;
 
     @PostMapping("/add")
     public ResponseEntity<?> addnewassignement(@RequestParam("userid") long userid, @RequestParam("projectid") String project, @RequestParam("month") int month, @RequestParam("day") int day) {
@@ -158,4 +162,16 @@ public class PlanningController {
         Msg.put("Message", "Updated assignment");
         return ResponseEntity.status(HttpStatus.OK).body(Msg);
     }
+
+    @PostMapping("/testmail")
+    public ResponseEntity<?> testMail() {
+        //System.out.println(user);
+        /*try {
+            emailService.sendHtmlEmail("swijden@gmail.com","1234test" );
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }*/
+        return ResponseEntity.status(HttpStatus.OK).body("Mail sent");
+    }
+
 }

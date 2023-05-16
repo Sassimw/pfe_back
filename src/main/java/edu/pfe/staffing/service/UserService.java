@@ -35,7 +35,7 @@ public class UserService {
     @Autowired
     MainConfiguration mainConfiguration;
 
-    public void register(User user) {
+    public User register(User user) {
         user.setenabled(true);
         user.getRoleList().add(roleRepository.findOneByName("COLLABORATEUR"));
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
@@ -43,6 +43,7 @@ public class UserService {
         user.setMatcle("SP" + mainConfiguration.getMaxMatcle());
         userRepository.save(user);
         mainConfiguration.inceremntMaxNudoss();
+        return user;
     }
 
     public boolean login(LoginRequest loginRequest) {
