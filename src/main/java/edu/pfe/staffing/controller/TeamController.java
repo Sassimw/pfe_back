@@ -1,13 +1,16 @@
 package edu.pfe.staffing.controller;
 
 import edu.pfe.staffing.model.Team;
+import edu.pfe.staffing.model.User;
 import edu.pfe.staffing.repository.TeamRepository;
 import edu.pfe.staffing.service.TeamService;
+import edu.pfe.staffing.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.HashMap;
 import java.util.List;
 @CrossOrigin("http://localhost:3000")
@@ -17,6 +20,9 @@ public class TeamController {
 
     @Autowired
     TeamService teamService;
+
+    @Autowired
+    UserService userService;
 
     @PostMapping("/add")
     public ResponseEntity<?> addnewteam(@RequestBody Team team) {
@@ -112,5 +118,27 @@ public class TeamController {
 
         return ResponseEntity.status(HttpStatus.OK).body(Msg);
 
+    }
+    @PostMapping("/Updatemanager")
+    public ResponseEntity<?> updatemanager(@PathParam("teamid") long teamid, @PathParam("userid") long userid) {
+        Team t = teamService.findById(teamid);
+        User u = userService.findUserById(userid);
+        if ( t.getId() == u.getTeam().getId())
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("A member of a team cannot be the manager of it");
+        t.setManager(u);
+        teamService.Updateteam(t);
+        HashMap<String, String> Msg = new HashMap<>();
+        Msg.put("Message", "Team updated:" + t.getId());
+        return ResponseEntity.status(HttpStatus.OK).body(Msg);
+    }
+
+    @PostMapping("/Updatename")
+    public ResponseEntity<?> updatename(@PathParam("teamid") long teamid, @PathParam("name") String name) {
+        Team t = teamService.findById(teamid);
+        t.setName(name);
+        teamService.Updateteam(t);
+        HashMap<String, String> Msg = new HashMap<>();
+        Msg.put("Message", "Team updated:" + t.getId());
+        return ResponseEntity.status(HttpStatus.OK).body(Msg);
     }
 }
