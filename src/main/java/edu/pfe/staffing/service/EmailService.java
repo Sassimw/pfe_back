@@ -32,7 +32,7 @@ public class EmailService {
 
         message.setFrom(new InternetAddress("swijden@gmail.com"));
         message.setRecipients(MimeMessage.RecipientType.TO, to);
-        message.setSubject("Your Login to Staffing app");
+        message.setSubject("[Staffing App] Login ");
 
         String htmlContent = "<h2>Welcome to the Staffing App</h2>" +
                 "<h4>This is a generated MATCLE  <h3><strong>"+ user.getMatcle()+"</strong></h3> . you will need it to connect.</h4>"

@@ -1,11 +1,13 @@
 package edu.pfe.staffing.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
+//@JsonIgnoreProperties({"hibernateLazyInitializer","handler","manager"})
 public class Team {
 @Id
 @GeneratedValue(strategy = GenerationType.IDENTITY)

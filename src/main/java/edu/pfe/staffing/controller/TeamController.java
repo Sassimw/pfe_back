@@ -3,6 +3,7 @@ package edu.pfe.staffing.controller;
 import edu.pfe.staffing.model.Team;
 import edu.pfe.staffing.model.User;
 import edu.pfe.staffing.repository.TeamRepository;
+import edu.pfe.staffing.service.EmailService;
 import edu.pfe.staffing.service.TeamService;
 import edu.pfe.staffing.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 @CrossOrigin("http://localhost:3000")
@@ -23,6 +26,8 @@ public class TeamController {
 
     @Autowired
     UserService userService;
+    @Autowired
+    EmailService emailService;
 
     @PostMapping("/add")
     public ResponseEntity<?> addnewteam(@RequestBody Team team) {
@@ -129,6 +134,16 @@ public class TeamController {
         teamService.Updateteam(t);
         HashMap<String, String> Msg = new HashMap<>();
         Msg.put("Message", "Team updated:" + t.getId());
+
+        //Date
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date date = new Date();
+
+        String body = "Hello " + u.getFirstname() + " "
+                + u.getLastname() + " , You have been named the manager of the team "  + t.getName() + " on " + date;
+        String Subject="[Staffing App] Team Manager";
+        emailService.sendEmail(u.getEmail(),Subject,body );
+
         return ResponseEntity.status(HttpStatus.OK).body(Msg);
     }
 

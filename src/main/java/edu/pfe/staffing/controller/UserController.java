@@ -5,15 +5,14 @@ import edu.pfe.staffing.model.Project;
 import edu.pfe.staffing.model.Team;
 import edu.pfe.staffing.model.User;
 import edu.pfe.staffing.security.JwtTokenUtil;
-import edu.pfe.staffing.service.AssignmentRequestService;
-import edu.pfe.staffing.service.ProjectService;
-import edu.pfe.staffing.service.TeamService;
-import edu.pfe.staffing.service.UserService;
+import edu.pfe.staffing.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.websocket.server.PathParam;
 import java.time.LocalDate;
@@ -30,6 +29,8 @@ public class UserController {
     UserService userService;
     @Autowired
     TeamService teamService;
+    @Autowired
+    EmailService emailService;
 
     @PostMapping("/Updateteam")
     public ResponseEntity<?> addusertoateam(@PathParam("userid") long userid, @PathParam("teamid") long teamid) {
@@ -39,6 +40,14 @@ public class UserController {
         userService.UpdateUser(u);
         HashMap<String, String> Msg = new HashMap<>();
         Msg.put("Message", "UserUpdated:" + u.getId());
+        //Date
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date date = new Date();
+
+        String body = "Hello " + u.getFirstname() + " "
+                + u.getLastname() + " , You have been changed to the team "  + t.getName() + " on " + date;
+        String Subject="[Staffing App] Team Changed";
+        emailService.sendEmail(u.getEmail(),Subject,body );
         return ResponseEntity.status(HttpStatus.OK).body(Msg);
     }
 
