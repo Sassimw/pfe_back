@@ -36,7 +36,7 @@ public class EmailService {
 
         String htmlContent = "<h2>Welcome to the Staffing App</h2>" +
                 "<h4>This is a generated MATCLE  <h3><strong>"+ user.getMatcle()+"</strong></h3> . you will need it to connect.</h4>"
-                + "<h4><a href=\"http://localhost:3000/login\">Click to connect</h4>"
+                + "<h4><a href=\"http://localhost:3010/login\">Click to connect</h4>"
                 +"<h4><p>Thank you </h4>";
         String html ="<!DOCTYPE html>\n" +
                 "<html lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\">\n" +
@@ -372,7 +372,7 @@ public class EmailService {
                 "          \t<table role=\"presentation\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
                 "          \t\t<tr>\n" +
                 "          \t\t\t<td class=\"logo\" style=\"text-align: center;\">\n" +
-                "\t\t\t            <h1><a href=\"http://localhost:3000/login\">Staffing App</a></h1>\n" +
+                "\t\t\t            <h1><a href=\"http://localhost:3010/login\">Staffing App</a></h1>\n" +
                 "\t\t\t          </td>\n" +
                 "          \t\t</tr>\n" +
                 "          \t</table>\n" +
@@ -391,7 +391,7 @@ public class EmailService {
                 "            \t\t\t<div class=\"text\" style=\"padding: 0 2.5em; text-align: center;\">\n" +
                 "            \t\t\t\t<h2>Hello "+user.getFirstname()+" " +user.getLastname() +  " ! This is your Login</h2>\n" +
                 "            \t\t\t\t<h2>"+user.getMatcle()+"</h2>\n" +
-                "            \t\t\t\t<p style=\"font-family: sans-serif; font-size: 14px; vertical-align: top; border-radius: 5px; text-align: center; background-color: #3498db;\" valign=\"top\" align=\"center\" bgcolor=\"#3498db\" ><a href=\"http://localhost:3000/login\" class=\"btn btn-primary\">Login</a></p>\n" +
+                "            \t\t\t\t<p style=\"font-family: sans-serif; font-size: 14px; vertical-align: top; border-radius: 5px; text-align: center; background-color: #3498db;\" valign=\"top\" align=\"center\" bgcolor=\"#3498db\" ><a href=\"http://localhost:3010/login\" class=\"btn btn-primary\">Login</a></p>\n" +
                 "            \t\t\t</div>\n" +
                 "            \t\t</td>\n" +
                 "            \t</tr>\n" +

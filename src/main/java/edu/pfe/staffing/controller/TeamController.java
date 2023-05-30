@@ -16,7 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin("http://localhost:3010")
 @RestController
 @RequestMapping("/team")
 public class TeamController {

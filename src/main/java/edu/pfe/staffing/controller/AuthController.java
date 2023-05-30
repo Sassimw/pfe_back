@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import java.util.HashMap;
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin("http://localhost:3010")
 @RestController
 @RequestMapping("/Auth")
 public class AuthController {

@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin("http://localhost:3010")
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -181,6 +181,22 @@ public class UserController {
 
         return ResponseEntity.status(HttpStatus.OK).body(Msg);
 
+    }
+
+    @GetMapping("/Connected")
+    public ResponseEntity<?> getConnectedUser(HttpServletRequest httpServletRequest) {
+
+
+
+        String token = httpServletRequest.getHeader("Authorization");
+        if (token.startsWith("Bearer")) {
+            token = token.substring("Bearer ".length());
+        }
+        String matcle = jwtTokenUtil.getUsernameFromToken(token);
+        User user = userService.findUserByMatcle(matcle);
+        user.setTeam(null);
+
+        return ResponseEntity.ok().body(user);
     }
 
 }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin("http://localhost:3010")
 @RestController
 @RequestMapping("/request")
 public class AssigmentRequestController {
