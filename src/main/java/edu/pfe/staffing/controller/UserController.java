@@ -9,6 +9,7 @@ import edu.pfe.staffing.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -31,6 +32,9 @@ public class UserController {
     TeamService teamService;
     @Autowired
     EmailService emailService;
+
+    @Autowired
+    PasswordEncoder bCryptPasswordEncoder;
 
     @PostMapping("/Updateteam")
     public ResponseEntity<?> addusertoateam(@PathParam("userid") long userid, @PathParam("teamid") long teamid) {
@@ -55,12 +59,27 @@ public class UserController {
 
 
 
+
+
     @PostMapping("/UpdateUser")
     public ResponseEntity<?> UpdateUser(@PathParam("userid") long userid, @PathParam("firstname") String firstname,@PathParam("lastname") String lastname,@PathParam("email") String email)  {
         User u = userService.findUserById(userid);
         u.setFirstname(firstname);
         u.setLastname(lastname);
         u.setEmail(email);
+        userService.UpdateUser(u);
+        HashMap<String, String> Msg = new HashMap<>();
+        Msg.put("Message", "UserUpdated:" + u.getId());
+        return ResponseEntity.status(HttpStatus.OK).body(Msg);
+    }
+
+    @PostMapping("/UpdateUserAndPassword")
+    public ResponseEntity<?> UpdateUserAndPassword(@PathParam("userid") long userid, @PathParam("firstname") String firstname,@PathParam("lastname") String lastname,@PathParam("email") String email,@PathParam("Password") String Password)  {
+        User u = userService.findUserById(userid);
+        u.setFirstname(firstname);
+        u.setLastname(lastname);
+        u.setEmail(email);
+        u.setPassword(bCryptPasswordEncoder.encode(Password));
         userService.UpdateUser(u);
         HashMap<String, String> Msg = new HashMap<>();
         Msg.put("Message", "UserUpdated:" + u.getId());
@@ -194,7 +213,7 @@ public class UserController {
         }
         String matcle = jwtTokenUtil.getUsernameFromToken(token);
         User user = userService.findUserByMatcle(matcle);
-        user.setTeam(null);
+        user.getTeam().setManager(null);
 
         return ResponseEntity.ok().body(user);
     }

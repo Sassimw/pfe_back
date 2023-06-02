@@ -37,6 +37,7 @@ public class Assignment {
     }
 
     public Assignment() {
+        this.date = new Date() ;
     }
 
     public long getId() {

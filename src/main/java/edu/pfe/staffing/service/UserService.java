@@ -51,8 +51,6 @@ public class UserService {
         if (user == null)
             return false;
         else return true;
-
-
     }
 
 
@@ -107,5 +105,6 @@ public class UserService {
         planningRepository.deleteById(userid);
         userRepository.deleteById(userid);
     }
+
 
 }
